@@ -24,8 +24,7 @@ OBJS_CLIENT	= 	$(addprefix $(OBJS_DIR)/, $(patsubst %.c, %.o, $(SRCS_CLIENT)))
 
 all:	clean_log $(SERVER) $(CLIENT)
 
-$(NAME):
-			all
+$(NAME):	all
 
 $(SERVER): 	$(OBJS_SERVER)
 			@printf "$(GREEN)$(BOLD)Compiling $(NO_COLOR)$(UNDER_LINE)$(BOLD)$(SERVER)$(NO_COLOR)$(BOLD)  ––  "
@@ -44,6 +43,8 @@ $(OBJS_DIR)/%.o:	%.c ${HEADER}
 					@printf "$(GREEN)$(BOLD)Compiling $(UNDER_LINE)$(YELLOW)$<$(NO_COLOR)  $(BOLD)–– "
 					@printf "$(RED)[KO]$(NO_COLOR)"
 					@$(CC) $(CFLAGS) -c $< -o $@ 2>>log && printf "\b\b\b\b$(GREEN)[OK]$(NO_COLOR)\n" || printf "\n" 
+
+bonus:		all
 
 clean_log:	
 			@rm -rf log
