@@ -6,11 +6,10 @@
 /*   By: vitaly <vitaly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/07 13:38:55 by vitaly            #+#    #+#             */
-/*   Updated: 2021/09/07 16:52:13 by vitaly           ###   ########.fr       */
+/*   Updated: 2021/09/09 14:50:01 by vitaly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include "head_minitalk.h"
 
 int	main(int argc, char **argv)
@@ -19,7 +18,7 @@ int	main(int argc, char **argv)
 	char	*message;
 
 	prepare_argument(argc, argv, &pid, &message);
-	signal(SIGUSR2, error);
+	signal(SIGUSR2, ft_close_client);
 	send_message(pid, message);
 	while (21)
 		pause();

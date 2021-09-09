@@ -6,7 +6,7 @@
 /*   By: vitaly <vitaly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/07 15:57:27 by vitaly            #+#    #+#             */
-/*   Updated: 2021/09/07 16:56:54 by vitaly           ###   ########.fr       */
+/*   Updated: 2021/09/09 14:59:34 by vitaly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,7 @@
 void	prepare_argument(int argc, char **argv, int *pid, char **message)
 {
 	if (argc < 3)
-	{
-		ft_putstr_fd("Error\ninvalid argument", 1);
-		exit(1);
-	}
+		report_an_error("Error\ninvalid argument");
 	*pid = ft_atoi(argv[1]);
 	*message = argv[2];
 }
@@ -43,7 +40,7 @@ int	send_message(int pid, char *message)
 				if (kill(pid, SIGUSR2) == -1)
 					exit(1);
 			i *= 2;
-			usleep(100);
+			usleep(60);
 		}
 		if (message[k] == '\0')
 			return (0);
@@ -51,9 +48,8 @@ int	send_message(int pid, char *message)
 	}
 }
 
-void	error(int sig)
+void	ft_close_client(int sig)
 {
 	(void)sig;
-	ft_putstr_fd("u", 1);
 	exit(0);
 }

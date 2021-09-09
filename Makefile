@@ -1,7 +1,9 @@
 
 SRCS_SERVER	= server.c utils.c utils_s.c
 
-SRCS_CLIENT	= client.c utils.c utils_c.c
+SRCS_CLIENT	= client.c utils.c utils_c.c ft_atoi.c
+
+NAME	=
 
 HEADER	= head_minitalk.h
 
@@ -22,8 +24,8 @@ OBJS_CLIENT	= 	$(addprefix $(OBJS_DIR)/, $(patsubst %.c, %.o, $(SRCS_CLIENT)))
 
 all:	clean_log $(SERVER) $(CLIENT)
 
-run:	all
-		./${NAME}
+$(NAME):
+			all
 
 $(SERVER): 	$(OBJS_SERVER)
 			@printf "$(GREEN)$(BOLD)Compiling $(NO_COLOR)$(UNDER_LINE)$(BOLD)$(SERVER)$(NO_COLOR)$(BOLD)  ––  "
