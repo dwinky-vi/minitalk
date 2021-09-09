@@ -1,28 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.c                                           :+:      :+:    :+:   */
+/*   client_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vitaly <vitaly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/07 13:38:37 by vitaly            #+#    #+#             */
-/*   Updated: 2021/09/09 23:46:26 by vitaly           ###   ########.fr       */
+/*   Created: 2021/09/07 13:38:55 by vitaly            #+#    #+#             */
+/*   Updated: 2021/09/10 00:00:49 by vitaly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "head_minitalk.h"
 
-int	main(void)
+void	ft_feedback(int sig)
 {
-	struct sigaction	sa_signal;
+	(void)sig;
+	write(1, "response received\n", 18);
+}
 
-	sa_signal.sa_flags = SA_SIGINFO;
-	sa_signal.sa_sigaction = ft_signal_handler;
-	if (sigaction(SIGUSR1, &sa_signal, NULL) == -1)
-		report_an_error("Error\nbad SIGUSR1\n");
-	if (sigaction(SIGUSR2, &sa_signal, NULL) == -1)
-		report_an_error("Error\nbad SIGUSR2\n");
-	print_pid();
+int	main(int argc, char **argv)
+{
+	int		pid;
+	char	*message;
+
+	prepare_argument(argc, argv, &pid, &message);
+	signal(SIGUSR1, ft_feedback);
+	signal(SIGUSR2, ft_close_client);
+	send_message(pid, message);
 	while (21)
 		pause();
 	return (0);

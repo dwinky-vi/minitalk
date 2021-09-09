@@ -3,6 +3,10 @@ SRCS_SERVER	= server.c utils.c utils_s.c
 
 SRCS_CLIENT	= client.c utils.c utils_c.c ft_atoi.c
 
+SRCS_SERVER_BONUS	= server_bonus.c utils.c utils_s_bonus.c
+
+SRCS_CLIENT_BONUS	= client_bonus.c utils.c utils_c.c ft_atoi.c
+
 NAME	=
 
 HEADER	= head_minitalk.h
@@ -10,6 +14,10 @@ HEADER	= head_minitalk.h
 SERVER	= server
 
 CLIENT	= client
+
+SERVER_BONUS	= server_bonus
+
+CLIENT_BONUS	= client_bonus
 
 CC		= gcc
 
@@ -21,6 +29,9 @@ OBJS_SERVER	= 	$(addprefix $(OBJS_DIR)/, $(patsubst %.c, %.o, $(SRCS_SERVER)))
 
 OBJS_CLIENT	= 	$(addprefix $(OBJS_DIR)/, $(patsubst %.c, %.o, $(SRCS_CLIENT)))
 
+OBJS_SERVER_BONUS	= 	$(addprefix $(OBJS_DIR)/, $(patsubst %.c, %.o, $(SRCS_SERVER_BONUS)))
+
+OBJS_CLIENT_BONUS	= 	$(addprefix $(OBJS_DIR)/, $(patsubst %.c, %.o, $(SRCS_CLIENT_BONUS)))
 
 all:	clean_log $(SERVER) $(CLIENT)
 
@@ -38,13 +49,27 @@ $(CLIENT): 	$(OBJS_CLIENT)
 			printf "$(RED)$(BOLD)[Failure]"
 			@printf "$(NO_COLOR)\n"
 
+
+$(SERVER_BONUS): 	$(OBJS_SERVER_BONUS)
+			@printf "$(GREEN)$(BOLD)Compiling $(NO_COLOR)$(UNDER_LINE)$(BOLD)$(SERVER_BONUS)$(NO_COLOR)$(BOLD)  ––  "
+			@$(CC) $(CFLAGS) $(OBJS_SERVER_BONUS) -o $(SERVER) 2>>log && printf "$(LIGHT_GREEN)$(BOLD)[Success]" && rm -rf log || \
+			printf "$(RED)$(BOLD)[Failure]"
+			@printf "$(NO_COLOR)\n"
+
+$(CLIENT_BONUS): 	$(OBJS_CLIENT_BONUS)
+			@printf "$(GREEN)$(BOLD)Compiling $(NO_COLOR)$(UNDER_LINE)$(BOLD)$(CLIENT_BONUS)$(NO_COLOR)$(BOLD)  ––  "
+			@$(CC) $(CFLAGS) $(OBJS_CLIENT_BONUS) -o $(CLIENT) 2>>log && printf "$(LIGHT_GREEN)$(BOLD)[Success]" && rm -rf log || \
+			printf "$(RED)$(BOLD)[Failure]"
+			@printf "$(NO_COLOR)\n"
+
 $(OBJS_DIR)/%.o:	%.c ${HEADER}
 					@test -d $(OBJS_DIR) || mkdir $(OBJS_DIR)
 					@printf "$(GREEN)$(BOLD)Compiling $(UNDER_LINE)$(YELLOW)$<$(NO_COLOR)  $(BOLD)–– "
 					@printf "$(RED)[KO]$(NO_COLOR)"
 					@$(CC) $(CFLAGS) -c $< -o $@ 2>>log && printf "\b\b\b\b$(GREEN)[OK]$(NO_COLOR)\n" || printf "\n" 
 
-bonus:		all
+bonus:		clean_log $(SERVER_BONUS) $(CLIENT_BONUS)
+
 
 clean_log:	
 			@rm -rf log

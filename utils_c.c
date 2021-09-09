@@ -6,7 +6,7 @@
 /*   By: vitaly <vitaly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/07 15:57:27 by vitaly            #+#    #+#             */
-/*   Updated: 2021/09/09 17:06:46 by vitaly           ###   ########.fr       */
+/*   Updated: 2021/09/10 00:08:25 by vitaly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,13 @@ int	send_message(int pid, char *message)
 			if ((i & message[k]) > 0)
 			{
 				if (kill(pid, SIGUSR1) == -1)
-					report_an_error("Error\nbad SIGUSR1, trying to send bit");
+					report_an_error("Error\nbad SIGUSR1 in send_message\n");
 			}
 			else
 				if (kill(pid, SIGUSR2) == -1)
-					report_an_error("Error\nbad SIGUSR2, trying to send bit");
+					report_an_error("Error\nbad SIGUSR2 in send_message\n");
 			i *= 2;
-			usleep(60);
+			usleep(65);
 		}
 		if (message[k] == '\0')
 			return (0);

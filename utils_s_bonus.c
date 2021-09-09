@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_s.c                                          :+:      :+:    :+:   */
+/*   utils_s_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vitaly <vitaly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/07 14:03:21 by vitaly            #+#    #+#             */
-/*   Updated: 2021/09/10 00:09:15 by vitaly           ###   ########.fr       */
+/*   Updated: 2021/09/09 23:55:41 by vitaly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,11 @@ void	get_bit(int bit, int client_pid)
 				report_an_error("Error\nbad SIGUSR2 in get_bit\n");
 		}
 		else
+		{
 			write(1, &one_char, 1);
+			if (kill(client_pid, SIGUSR1) == -1)
+				report_an_error("Error\nbad SIGUSR1 in get_bit\n");
+		}
 		one_char = 0;
 		digit = 0;
 	}
