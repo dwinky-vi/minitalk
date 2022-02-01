@@ -7,8 +7,6 @@ SRCS_SERVER_BONUS	= server_bonus.c utils.c utils_s_bonus.c
 
 SRCS_CLIENT_BONUS	= client_bonus.c utils.c utils_c.c ft_atoi.c
 
-NAME	=
-
 HEADER	= head_minitalk.h
 
 SERVER	= server
@@ -19,11 +17,11 @@ SERVER_BONUS	= server_bonus
 
 CLIENT_BONUS	= client_bonus
 
-CC		= gcc
+CC			= gcc
 
-CFLAGS	= -Wall -Wextra -Werror
+CFLAGS		= -Wall -Wextra -Werror
 
-OBJS_DIR =	.obj
+OBJS_DIR	=	.obj
 
 OBJS_SERVER	= 	$(addprefix $(OBJS_DIR)/, $(patsubst %.c, %.o, $(SRCS_SERVER)))
 
@@ -33,46 +31,47 @@ OBJS_SERVER_BONUS	= 	$(addprefix $(OBJS_DIR)/, $(patsubst %.c, %.o, $(SRCS_SERVE
 
 OBJS_CLIENT_BONUS	= 	$(addprefix $(OBJS_DIR)/, $(patsubst %.c, %.o, $(SRCS_CLIENT_BONUS)))
 
+NAME_LOG_FILE	= log.txt
+
 all:	clean_log $(SERVER) $(CLIENT)
 
-$(NAME):	all
-
 $(SERVER): 	$(OBJS_SERVER)
-			@printf "$(GREEN)$(BOLD)Compiling $(NO_COLOR)$(UNDER_LINE)$(BOLD)$(SERVER)$(NO_COLOR)$(BOLD)  ––  "
-			@$(CC) $(CFLAGS) $(OBJS_SERVER) -o $(SERVER) 2>>log && printf "$(LIGHT_GREEN)$(BOLD)[Success]" && rm -rf log || \
-			printf "$(RED)$(BOLD)[Failure]"
+			@printf "$(GREEN)$(BOLD)Compiling $(NO_COLOR)$(BOLD)./$(SERVER)$(NO_COLOR)$(BOLD):  "
+			@$(CC) $(CFLAGS) $(OBJS_SERVER) -o $(SERVER) 2>>$(NAME_LOG_FILE) && printf "$(LIGHT_GREEN)$(BOLD)[Success]" || \
+			printf "$(RED)$(BOLD)[Failure]$(NO_COLOR)\nSee 📄 $(BOLD)$(NAME_LOG_FILE)$(NO_COLOR) file for more information."
 			@printf "$(NO_COLOR)\n"
 
 $(CLIENT): 	$(OBJS_CLIENT)
-			@printf "$(GREEN)$(BOLD)Compiling $(NO_COLOR)$(UNDER_LINE)$(BOLD)$(CLIENT)$(NO_COLOR)$(BOLD)  ––  "
-			@$(CC) $(CFLAGS) $(OBJS_CLIENT) -o $(CLIENT) 2>>log && printf "$(LIGHT_GREEN)$(BOLD)[Success]" && rm -rf log || \
-			printf "$(RED)$(BOLD)[Failure]"
+			@printf "$(GREEN)$(BOLD)Compiling $(NO_COLOR)$(BOLD)./$(CLIENT)$(NO_COLOR)$(BOLD):  "
+			@$(CC) $(CFLAGS) $(OBJS_CLIENT) -o $(CLIENT) 2>>$(NAME_LOG_FILE) && printf "$(LIGHT_GREEN)$(BOLD)[Success]" || \
+			printf "$(RED)$(BOLD)[Failure]$(NO_COLOR)\nSee 📄 $(BOLD)$(NAME_LOG_FILE)$(NO_COLOR) file for more information."
 			@printf "$(NO_COLOR)\n"
 
 
 $(SERVER_BONUS): 	$(OBJS_SERVER_BONUS)
-			@printf "$(GREEN)$(BOLD)Compiling $(NO_COLOR)$(UNDER_LINE)$(BOLD)$(SERVER_BONUS)$(NO_COLOR)$(BOLD)  ––  "
-			@$(CC) $(CFLAGS) $(OBJS_SERVER_BONUS) -o $(SERVER) 2>>log && printf "$(LIGHT_GREEN)$(BOLD)[Success]" && rm -rf log || \
-			printf "$(RED)$(BOLD)[Failure]"
+			@printf "$(GREEN)$(BOLD)Compiling $(NO_COLOR)$(BOLD)./$(SERVER)$(NO_COLOR)$(BOLD):  "
+			@$(CC) $(CFLAGS) $(OBJS_SERVER_BONUS) -o $(SERVER) 2>>$(NAME_LOG_FILE) && printf "$(LIGHT_GREEN)$(BOLD)[Success]" || \
+			printf "$(RED)$(BOLD)[Failure]$(NO_COLOR)\nSee 📄 $(BOLD)$(NAME_LOG_FILE)$(NO_COLOR) file for more information."
 			@printf "$(NO_COLOR)\n"
 
 $(CLIENT_BONUS): 	$(OBJS_CLIENT_BONUS)
-			@printf "$(GREEN)$(BOLD)Compiling $(NO_COLOR)$(UNDER_LINE)$(BOLD)$(CLIENT_BONUS)$(NO_COLOR)$(BOLD)  ––  "
-			@$(CC) $(CFLAGS) $(OBJS_CLIENT_BONUS) -o $(CLIENT) 2>>log && printf "$(LIGHT_GREEN)$(BOLD)[Success]" && rm -rf log || \
-			printf "$(RED)$(BOLD)[Failure]"
+			@printf "$(GREEN)$(BOLD)Compiling $(NO_COLOR)$(BOLD)./$(CLIENT)$(NO_COLOR)$(BOLD):  "
+			@$(CC) $(CFLAGS) $(OBJS_CLIENT_BONUS) -o $(CLIENT) 2>>$(NAME_LOG_FILE) && printf "$(LIGHT_GREEN)$(BOLD)[Success]" || \
+			printf "$(RED)$(BOLD)[Failure]$(NO_COLOR)\nSee 📄 $(BOLD)$(NAME_LOG_FILE)$(NO_COLOR) file for more information."
 			@printf "$(NO_COLOR)\n"
 
-$(OBJS_DIR)/%.o:	%.c ${HEADER}
+$(OBJS_DIR)/%.o:	%.c ${HEADER} Makefile
 					@test -d $(OBJS_DIR) || mkdir $(OBJS_DIR)
-					@printf "$(GREEN)$(BOLD)Compiling $(UNDER_LINE)$(YELLOW)$<$(NO_COLOR)  $(BOLD)–– "
-					@printf "$(RED)[KO]$(NO_COLOR)"
-					@$(CC) $(CFLAGS) -c $< -o $@ 2>>log && printf "\b\b\b\b$(GREEN)[OK]$(NO_COLOR)\n" || printf "\n" 
+					@printf "$(GREEN)$(BOLD)Compiling $(UNDER_LINE)$(YELLOW)$<$(NO_COLOR)$(BOLD): wait..."
+					@$(CC) $(CFLAGS) -c $< -o $@ 2>>$(NAME_LOG_FILE) && printf "\b\b\b\b\b\b\b       \b\b\b\b\b\b\b" && printf "$(GREEN)[OK]" || \
+                    				printf "\b\b\b\b\b\b\b       \b\b\b\b\b\b\b$(RED)[KO]"
+					@printf "$(NO_COLOR)\n"
 
 bonus:		clean_log $(SERVER_BONUS) $(CLIENT_BONUS)
 
 
 clean_log:	
-			@rm -rf log
+			@echo > $(NAME_LOG_FILE)
 
 clean:		clean_log
 			@rm -rf $(OBJS_SERVER)
@@ -81,9 +80,9 @@ clean:		clean_log
 
 fclean: 	clean
 			@rm -rf $(SERVER)
-			@printf "$(UNDER_LINE)$(BOLD)$(SERVER)$(NO_COLOR) $(LIGHT_RED)deleted$(NO_COLOR)\n"
+			@printf "$(BOLD)./$(SERVER)$(NO_COLOR) $(LIGHT_RED)deleted$(NO_COLOR)\n"
 			@rm -rf $(CLIENT)
-			@printf "$(UNDER_LINE)$(BOLD)$(CLIENT)$(NO_COLOR) $(LIGHT_RED)deleted$(NO_COLOR)\n"
+			@printf "$(BOLD)./$(CLIENT)$(NO_COLOR) $(LIGHT_RED)deleted$(NO_COLOR)\n"
 
 re: 		fclean all
 
